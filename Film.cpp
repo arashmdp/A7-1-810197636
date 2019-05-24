@@ -43,3 +43,7 @@ void Film::setRate(int _rate){
     mid/=rates.size();
     aveRate = mid;
 }
+
+void Film::setComment(Comment* comment){
+    comments.push_back(comment);
+}

@@ -5,7 +5,7 @@
 
 class Comment{
 public:
-    Comment(std::string content);
+    Comment(std::string _content, int _id);
     std::string getContent() const;
     std::string getReply() const;
     int getIDt() const;

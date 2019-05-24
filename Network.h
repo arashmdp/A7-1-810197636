@@ -27,6 +27,7 @@ class Network {
         void showFilmDetail(int filmID);
         void buyFilm(int filmID);
         void giveRate(std::vector<std::string> info);
+        void addComment(std::vector<std::string> info);
 
         bool getStatus() const;
 

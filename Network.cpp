@@ -219,3 +219,15 @@ void Network::giveRate(vector<string> information){
         }
     }
 }
+
+void Network::addComment(vector<string> information){
+    map<string,string> info = createMapInfo(information);
+    int filmID = stoi(info.at("film_id"));
+    for(int i=0 ; i<allFilms.size() ; i++){
+        if(allFilms[i]->getID() == filmID){
+            commentID++;
+            Comment* comment = new Comment(info.at("content"),commentID);
+            allFilms[i]->setComment(comment);
+        }
+    }
+}

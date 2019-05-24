@@ -14,6 +14,7 @@ public:
     Film(std::map <std::string,std::string> _info, User* _thePublisher, int _filmID);
     void edit(std::map<std::string,std::string> editMap);
     void setRate(int _rate);
+    void setComment(Comment* comment);
 
     std::map<std::string,std::string> getMapInfo() const;
     int getID() const;

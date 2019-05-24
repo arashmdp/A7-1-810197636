@@ -72,7 +72,7 @@ void detectCommands(string line, Network* network){
                 network->giveRate(command);
             }
             else if(command[1] == COMMENTS){
-
+                network->addComment(command);
             }
             else {
                 throw notFound();
