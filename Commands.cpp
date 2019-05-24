@@ -27,18 +27,19 @@ vector<string> subVector(vector<string> theVec, int begin){
 
 void detectCommands(string line, Network* network){
     vector<string> command = separate(line);
-    vector<string> info;
+    string key = command[0];
+    string method = command[1];
     try {
-        if (command[0] == POST){
-            if(command[1] == SIGNUP){
+        if (key == POST){
+            if(method == SIGNUP){
                 network->signup(command);
                 cout<<"OK"<<endl;
             }
-            else if (command[1] == LOGIN){
+            else if (method == LOGIN){
                 network->login(command);
                 cout<<"OK"<<endl;
             }
-            else if (command[1] == FILMS){
+            else if (method == FILMS){
                 if(network->getStatus()){
                     network->addFilm(command);
                     cout<<"OK"<<endl;
@@ -46,7 +47,7 @@ void detectCommands(string line, Network* network){
                     throw permissionDenied();
                 }
             }
-            else if(command[1] == MONEY){
+            else if(method == MONEY){
                 if (command.size()>3){
                     int amount = stoi(command[4]);
                     network->addMoney(amount);
@@ -58,23 +59,23 @@ void detectCommands(string line, Network* network){
                     }
                 }
             }
-            else if(command[1] == REPLIES){
+            else if(method == REPLIES){
 
             }
-            else if(command[1] == FOLLOWERS){
+            else if(method == FOLLOWERS){
                 int userID = stoi(command[4]);
                 network->follow(userID);
             }
-            else if(command[1] == BUY){
+            else if(method == BUY){
                 network->buyFilm(stoi(command[4]));
             }
-            else if(command[1] == RATE){
+            else if(method == RATE){
                 network->giveRate(command);
             }
-            else if(command[1] == COMMENTS){
+            else if(method == COMMENTS){
                 network->addComment(command);
             }
-            else if(command[1] == PUT_FILMS){
+            else if(method == PUT_FILMS){
                 if(network->getStatus()){
                     network->editFilm(command);
                     cout<<"OK"<<endl;
@@ -82,12 +83,7 @@ void detectCommands(string line, Network* network){
                     throw permissionDenied();
                 }
             }
-            else {
-                throw notFound();
-            }
-        }
-        else if (command[0] == DELETE){
-            if (command [1] == FILMS){
+            else if(method == DELETE_FILMS){
                 if(network->getStatus()){
                     int filmID = stoi(command[4]);
                     network->deleteFilm(filmID);
@@ -96,39 +92,39 @@ void detectCommands(string line, Network* network){
                     throw permissionDenied();
                 }
             }
-            else if(command[1] == COMMENTS){
+            else if(method == DELETE_COMMENTS){
 
             }
             else {
                 throw notFound();
             }
         }
-        else if (command[0] == GET){
-            if (command[1] == FOLLOWERS){
+        else if (key == GET){
+            if (method == FOLLOWERS){
                 if(network->getStatus()){
                     network->getFollowers();
                 } else {
                     throw permissionDenied();
                 }
             }
-            else if(command[1] == PUBLISHED){
+            else if(method == PUBLISHED){
                 if(network->getStatus()){
                     network->getPublished();
                 } else {
                 
                 }
             }
-            else if(command[1] == FILMS){
+            else if(method == FILMS){
                 if(command[3]=="film_id"){
                     network->showFilmDetail(stoi(command[4]));
                 } else {
                 
                 }
             }
-            else if(command[1] == PURCHASED){
+            else if(method == PURCHASED){
 
             }
-            else if(command[1] == NOIFICATIONS){
+            else if(method == NOIFICATIONS){
 
             }
             else {

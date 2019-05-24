@@ -8,7 +8,6 @@
 #include <string>
 
 #define POST "POST"
-#define PUT "PUT"
 #define GET "GET"
 #define DELETE "DELETE"
 #define SIGNUP "signup"
@@ -25,6 +24,8 @@
 #define NOIFICATIONS "notifications"
 #define LOGOUT "logout"
 #define PUT_FILMS "put_films"
+#define DELETE_FILMS "delete_films"
+#define DELETE_COMMENTS "delete_comments"
 
 std::vector<std::string> separate(std::string line);
 void detectCommands (std::string line, Network* network);
