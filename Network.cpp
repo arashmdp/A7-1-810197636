@@ -29,7 +29,7 @@ bool checkPublisher(vector<string> info){
     return false; 
 }
 
-int search(vector<string> info){
+int questionMarkPlace(vector<string> info){
     for(int i=0 ; i<info.size() ; i++){
         if(info[i] == "?"){
             return i+1;
@@ -37,9 +37,17 @@ int search(vector<string> info){
     }
 }
 
+Film* Network::searchFilmByID(int filmID){
+    for (int i=0 ; i<allFilms.size() ; i++){
+        if(allFilms[i]->getID() == filmID){
+            return allFilms[i];
+        }
+    }
+}
+
 map<string,string> createMapInfo(vector<string> info){
     map<string, string> mapInfo;
-    int index = search(info);
+    int index = questionMarkPlace(info);
     for(int i=index; i<info.size()-1 ; i+=2){
         if(info[i] != PUBLISHER){
             mapInfo.insert( pair<string,string> (info[i],info[i+1]) );
@@ -76,11 +84,11 @@ void Network::signup (vector<string> information){
         if(isPublisher){
             User* newUser = new Publisher(mapInfo, userCount, true);
             allUsersAndPublishers.push_back(newUser);
-            currentlyUser = newUser;
+            currentUser = newUser;
         } else {
             User* newUser = new User(mapInfo, userCount, false);
             allUsersAndPublishers.push_back(newUser);
-            currentlyUser = newUser;
+            currentUser = newUser;
         }
         userCount++;
     }
@@ -92,7 +100,7 @@ void Network::login (vector<string> information){
         for(int i=0 ; i<allUsersAndPublishers.size() ; i++){
             if(allUsersAndPublishers[i]->getUsername() == mapInfo.at("username")){
                 if(allUsersAndPublishers[i]->getPassword() == mapInfo.at("password")){
-                    currentlyUser = allUsersAndPublishers[i];
+                    currentUser = allUsersAndPublishers[i];
                     isPublisher = allUsersAndPublishers[i]->getStatus();
                     return;
                 } else {
@@ -108,23 +116,23 @@ void Network::login (vector<string> information){
 
 void Network::addFilm(vector<string> info){
     map<string,string> mapInfo = createMapInfo(info);
-    Film* film = new Film(mapInfo,currentlyUser,filmCount);
+    Film* film = new Film(mapInfo,currentUser,filmCount);
     filmCount++;
     allFilms.push_back(film);
-    currentlyUser->newFilm(film);
+    currentUser->newFilm(film);
 }
 
 void Network::editFilm(vector<string> info){
     map<string,string> mapInfo = createMapInfo(info);
-    currentlyUser->editFilm(mapInfo);
+    currentUser->editFilm(mapInfo);
 }
 
 void Network::deleteFilm(int filmID){
     try{
         for(int i=0 ; i<allFilms.size() ; i++){
             if(filmID == allFilms[i]->getID()){
-                if(currentlyUser == allFilms[i]->getUser()){
-                    currentlyUser->deleteFilm(filmID);
+                if(currentUser == allFilms[i]->getUser()){
+                    currentUser->deleteFilm(filmID);
                     allFilms.erase(allFilms.begin()+i);
                 } else {
                     throw permissionDenied();
@@ -139,27 +147,27 @@ void Network::deleteFilm(int filmID){
 }
 
 void Network::getFollowers(){
-    currentlyUser->getFollowers();
+    currentUser->getFollowers();
 }
 
 void Network::follow(int userID){
     for (int i=0 ; i<allUsersAndPublishers.size() ; i++){
         if(userID == allUsersAndPublishers[i]->getID()){
-            allUsersAndPublishers[i]->addFollower(currentlyUser);
-            currentlyUser->follow(allUsersAndPublishers[i]);
+            allUsersAndPublishers[i]->addFollower(currentUser);
+            currentUser->follow(allUsersAndPublishers[i]);
             break;
         }
     }
 }
 
 void Network::addMoney(int amount){
-    currentlyUser->addMoney(amount);
+    currentUser->addMoney(amount);
 }
 
 void Network::showFilmDetail(int filmID){
     for(int i=0 ; i<allFilms.size() ; i++){
         if(filmID == allFilms[i]->getID()){
-            currentlyUser->showFilmDetail(allFilms[i]);
+            currentUser->showFilmDetail(allFilms[i]);
         }
     }
 }
@@ -167,13 +175,13 @@ void Network::showFilmDetail(int filmID){
 void Network::buyFilm(int filmID){
     for(int i=0 ; i<allFilms.size() ; i++){
         if(filmID == allFilms[i]->getID()){
-            currentlyUser->buyFilm(allFilms[i]);
+            currentUser->buyFilm(allFilms[i]);
         }
     }
 }
 
 void Network::getPublished(){
-    currentlyUser->getPublished();
+    currentUser->getPublished();
 }
 bool Network::search(vector<string>& filters, Film* film, int i){
     map<string,string> filmInfo = film->getMapInfo();
@@ -199,35 +207,30 @@ void Network::searchFilm(vector<string> filters){
     }
 }
 
-void showSearch(std::vector<Film*> films){
+void Network::showSearch(std::vector<Film*> films){
   cout<<"#. Film Id | Film Name | Film Length | Film Price | ";
   cout<<"Rate | Production Year | Film Director";
     
 }
 
 void Network::getMoney(){
-    currentlyUser->getMoney();
+    currentUser->getMoney();
 }
 
 void Network::giveRate(vector<string> information){
     map<string,string> info = createMapInfo(information);
     int filmID = stoi(info.at("film_id"));
     int rate = stoi(info.at("score"));
-    for(int i=0 ; i<allFilms.size() ; i++){
-        if(allFilms[i]->getID() == filmID){
-            currentlyUser->rateFilm(allFilms[i],rate);
-        }
-    }
+    Film* theFilm = searchFilmByID(filmID);
+    currentUser->rateFilm(theFilm,rate);
 }
 
 void Network::addComment(vector<string> information){
     map<string,string> info = createMapInfo(information);
     int filmID = stoi(info.at("film_id"));
-    for(int i=0 ; i<allFilms.size() ; i++){
-        if(allFilms[i]->getID() == filmID){
-            commentID++;
-            Comment* comment = new Comment(info.at("content"),commentID);
-            allFilms[i]->setComment(comment);
-        }
-    }
+    string content = info.at("content");
+    Film* film = searchFilmByID(filmID);
+    commentID++;
+    Comment* comment = new Comment(content,commentID);
+    film->setComment(comment);
 }

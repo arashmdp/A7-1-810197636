@@ -34,6 +34,7 @@ class Network {
     protected:
         bool noSameName(std::string name);
         bool search(std::vector<std::string>& filters, Film* film, int i);
+        Film* searchFilmByID(int filmID);
 
     private:
         
@@ -42,7 +43,7 @@ class Network {
         int filmCount, userCount;
 
         int commentID =0;
-        User* currentlyUser;
+        User* currentUser;
         bool isPublisher;
 };
 
