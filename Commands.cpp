@@ -74,12 +74,7 @@ void detectCommands(string line, Network* network){
             else if(command[1] == COMMENTS){
                 network->addComment(command);
             }
-            else {
-                throw notFound();
-            }
-        }
-        else if (command[0] == PUT){
-            if(command[1] == FILMS){
+            else if(command[1] == PUT_FILMS){
                 if(network->getStatus()){
                     network->editFilm(command);
                     cout<<"OK"<<endl;
