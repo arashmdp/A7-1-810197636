@@ -61,7 +61,6 @@ bool Network::getStatus() const {
 }
 
 bool Network::noSameName(string name){
-    try {
         if(allUsersAndPublishers.size() != 0){
             for(int i=0 ; i<allUsersAndPublishers.size() ; i++){
             if(name == allUsersAndPublishers[i]->getUsername()){
@@ -71,10 +70,6 @@ bool Network::noSameName(string name){
             }
         }
         return true;
-        }
-    catch (std::exception &exp){
-            cerr<<exp.what()<<endl;
-    }
 }
 
 void Network::signup (vector<string> information){
@@ -95,7 +90,6 @@ void Network::signup (vector<string> information){
 }
 
 void Network::login (vector<string> information){
-    try{
         map<string,string> mapInfo = createMapInfo(information);
         for(int i=0 ; i<allUsersAndPublishers.size() ; i++){
             if(allUsersAndPublishers[i]->getUsername() == mapInfo.at("username")){
@@ -105,13 +99,11 @@ void Network::login (vector<string> information){
                     return;
                 } else {
                     throw badRequest();
+                    return;
                 }
             }
         }
         throw badRequest();
-    } catch(std::exception &exp) {
-        cerr<<exp.what()<<endl;
-    }
 }
 
 void Network::addFilm(vector<string> info){
@@ -128,22 +120,18 @@ void Network::editFilm(vector<string> info){
 }
 
 void Network::deleteFilm(int filmID){
-    try{
-        for(int i=0 ; i<allFilms.size() ; i++){
-            if(filmID == allFilms[i]->getID()){
-                if(currentUser == allFilms[i]->getUser()){
-                    currentUser->deleteFilm(filmID);
-                    allFilms.erase(allFilms.begin()+i);
-                } else {
-                    throw permissionDenied();
-                }
-                return;
+    for(int i=0 ; i<allFilms.size() ; i++){
+        if(filmID == allFilms[i]->getID()){
+            if(currentUser == allFilms[i]->getUser()){
+                currentUser->deleteFilm(filmID);
+                allFilms.erase(allFilms.begin()+i);
+            } else {
+                throw permissionDenied();
             }
-        }   
-        throw notFound();
-    } catch(std::exception &exp){
-        cerr<<exp.what()<<endl;
-    }
+            return;
+        }
+    }   
+    throw notFound();
 }
 
 void Network::getFollowers(){
