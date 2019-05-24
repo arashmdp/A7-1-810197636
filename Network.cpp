@@ -87,20 +87,23 @@ void Network::signup (vector<string> information){
 }
 
 void Network::login (vector<string> information){
-    map<string,string> mapInfo = createMapInfo(information);
-    for(int i=0 ; i<allUsersAndPublishers.size() ; i++){
-        if(allUsersAndPublishers[i]->getUsername() == mapInfo.at("username")){
-            if(allUsersAndPublishers[i]->getPassword() == mapInfo.at("password")){
-                currentlyUser = allUsersAndPublishers[i];
-                isPublisher = allUsersAndPublishers[i]->getStatus();
-                return;
-            } else {
-                //sends error   
-                //should return
+    try{
+        map<string,string> mapInfo = createMapInfo(information);
+        for(int i=0 ; i<allUsersAndPublishers.size() ; i++){
+            if(allUsersAndPublishers[i]->getUsername() == mapInfo.at("username")){
+                if(allUsersAndPublishers[i]->getPassword() == mapInfo.at("password")){
+                    currentlyUser = allUsersAndPublishers[i];
+                    isPublisher = allUsersAndPublishers[i]->getStatus();
+                    return;
+                } else {
+                    throw badRequest();
+                }
             }
         }
+        throw badRequest();
+    } catch(std::exception &exp) {
+        cerr<<exp.what()<<endl;
     }
-    //sends error
 }
 
 void Network::addFilm(vector<string> info){
@@ -117,18 +120,22 @@ void Network::editFilm(vector<string> info){
 }
 
 void Network::deleteFilm(int filmID){
-    for(int i=0 ; i<allFilms.size() ; i++){
-        if(filmID == allFilms[i]->getID()){
-            if(currentlyUser == allFilms[i]->getUser()){
-                currentlyUser->deleteFilm(filmID);
-                allFilms.erase(allFilms.begin()+i);
-            } else {
-                // throw error "Permission Denied"
+    try{
+        for(int i=0 ; i<allFilms.size() ; i++){
+            if(filmID == allFilms[i]->getID()){
+                if(currentlyUser == allFilms[i]->getUser()){
+                    currentlyUser->deleteFilm(filmID);
+                    allFilms.erase(allFilms.begin()+i);
+                } else {
+                    throw permissionDenied();
+                }
+                return;
             }
-            return;
-        }
+        }   
+        throw notFound();
+    } catch(std::exception &exp){
+        cerr<<exp.what()<<endl;
     }
-    //throw error "Not Found"
 }
 
 void Network::getFollowers(){
