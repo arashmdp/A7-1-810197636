@@ -226,8 +226,9 @@ void Network::addComment(vector<string> information){
 
 void Network::matriceFilmGraph(){
     int weight;
-    for(int i=0; i<allFilms.size() ; i++){
-        for(int j=0; j<allFilms.size() ; i++){
+    for(int i=0 ; i<allFilms.size() ; i++){
+        filmMatrix.push_back(vector<int>());
+        for(int j=0 ; j<allFilms.size() ; j++){
             if(i==j){
                 filmMatrix[i].push_back(0);
                 continue;

@@ -55,9 +55,11 @@ void detectCommands(string line, Network* network){
                 if (command.size()>3){
                     int amount = stoi(command[4]);
                     network->addMoney(amount);
+                    cout<<"OK"<<endl;
                 }else{
                     if(network->getStatus()){
                         network->getMoney();
+                        cout<<"OK"<<endl;
                     } else {
                         throw permissionDenied();
                     }
@@ -69,6 +71,7 @@ void detectCommands(string line, Network* network){
             else if(method == FOLLOWERS){
                 int userID = stoi(command[4]);
                 network->follow(userID);
+                cout<<"OK"<<endl;
             }
             else if(method == BUY){
                 network->buyFilm(stoi(command[4]));
