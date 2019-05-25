@@ -47,3 +47,7 @@ void Film::setRate(int _rate){
 void Film::setComment(Comment* comment){
     comments.push_back(comment);
 }
+
+void Film::buy(){
+    numberPurchased++;
+}

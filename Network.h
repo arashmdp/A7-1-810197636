@@ -6,12 +6,14 @@
 #include "User.h"
 #include "Publisher.h"
 #include "Comment.h"
+#include "Admin.h"
 
 class Network {
     public:
         Network();
         void signup(std::vector<std::string> informations);
         void login(std::vector<std::string> informations);
+        void logout();
         
         void addFilm(std::vector<std::string> information);
         void editFilm(std::vector<std::string> newInfo);
@@ -29,6 +31,9 @@ class Network {
         void giveRate(std::vector<std::string> info);
         void addComment(std::vector<std::string> info);
 
+        void addAcountMoney(int money);
+        void getAcountMoney();
+
         bool getStatus() const;
 
     protected:
@@ -42,8 +47,11 @@ class Network {
         std::vector <Film*> allFilms;
         int filmCount, userCount;
 
+        
         int commentID =0;
         User* currentUser;
+        Admin* admin;
+        int acountMoney;
         bool isPublisher;
 };
 

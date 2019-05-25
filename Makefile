@@ -1,7 +1,7 @@
 CC = g++ -std=c++11
 
-a.out: main.o Commands.o Network.o User.o Publisher.o Film.o Comment.o Exceptions.o
-	$(CC) main.o Commands.o Network.o User.o Publisher.o Film.o Comment.o Exceptions.o
+a.out: main.o Commands.o Network.o Admin.o User.o Publisher.o Film.o Comment.o Exceptions.o
+	$(CC) main.o Commands.o Network.o Admin.o User.o Publisher.o Film.o Comment.o Exceptions.o
 
 main.o: main.cpp Network.h Commands.h
 	$(CC) -c main.cpp
@@ -12,8 +12,11 @@ Exceptions.o: Exceptions.cpp Exceptions.h
 Commands.o: Commands.cpp Commands.h Exceptions.h
 	$(CC) -c Commands.cpp
 
-Network.o: Network.cpp Network.h User.h Publisher.h Film.h
+Network.o: Network.cpp Network.h User.h Publisher.h Film.h Admin.h
 	$(CC) -c Network.cpp
+
+Admin.o: Admin.cpp Admin.h
+	$(CC) -c Admin.cpp
 
 User.o: User.cpp User.h Publisher.h Film.h 
 	$(CC) -c User.cpp

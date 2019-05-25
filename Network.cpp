@@ -14,6 +14,7 @@ using namespace std;
 Network::Network(){
     filmCount = 1;
     userCount = 1;
+    admin = new Admin();
 };
 
 bool checkPublisher(vector<string> info){
@@ -106,6 +107,14 @@ void Network::login (vector<string> information){
         throw badRequest();
 }
 
+void Network::logout(){
+    if(currentUser != 0){
+        currentUser = 0;
+    } else {
+        throw badRequest();
+    }
+}
+
 void Network::addFilm(vector<string> info){
     map<string,string> mapInfo = createMapInfo(info);
     Film* film = new Film(mapInfo,currentUser,filmCount);
@@ -161,11 +170,10 @@ void Network::showFilmDetail(int filmID){
 }
 
 void Network::buyFilm(int filmID){
-    for(int i=0 ; i<allFilms.size() ; i++){
-        if(filmID == allFilms[i]->getID()){
-            currentUser->buyFilm(allFilms[i]);
-        }
-    }
+    Film* film = searchFilmByID(filmID);
+    film->getUser()->buyFilm(admin,film);
+    currentUser->buyFilm(admin,film);
+    film->buy();
 }
 
 void Network::getPublished(){

@@ -56,12 +56,11 @@ void User::sendNotification(string content){
     notifications.push_back(content);
 }
 
-void User::buyFilm(Film* film){
+void User::buyFilm(Admin* admin,Film* film){
     int price = film->getPrice();
     if(price>=moneyAmount){
         moneyAmount-=price;
-        (film->getUser())->sendNotification("Your film is purchased!");
-        purchasedFilms.push_back(film);
+        purchased.push_back(film);
     }
 }
 

@@ -76,9 +76,14 @@ int Publisher::calculateMoney(Film* film){
 }
 
 void Publisher::getMoney(){
-    int partOfMoney;
-    for (int i=0 ; i<purchasedFilms.size() ; i++){
-        partOfMoney = calculateMoney(purchasedFilms[i]);
-        money+=partOfMoney;
-    }
+
+}
+
+void Publisher::buyFilm(Admin* admin, Film* film){
+    int price = film->getPrice();
+    int myPartMoney = calculateMoney(film);
+    int toAccountMoney = price - myPartMoney;
+    moneyFromFilms = myPartMoney;
+    admin->addMoney(toAccountMoney);
+    publisherNotifications.push_back("your film is bought");
 }

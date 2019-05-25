@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 
+#include "Admin.h"
 #include "Film.h"
 
 #define USERNAME "username"
@@ -27,12 +28,12 @@ class User {
         virtual void getFollowers() {};
         virtual void addFollower(User* follower) {};
         virtual void getPublished() {};
+        virtual void buyFilm(Admin* admin,Film* film);
         virtual void getMoney(){};
 
         void follow(User* flwingPub);
         void addMoney(int amount);
         void showFilmDetail(Film* film);
-        void buyFilm(Film* film);
         void rateFilm(Film* film, int rate);
 
         std::string getUsername() const;
@@ -51,7 +52,7 @@ class User {
         std::vector<User*> following;
         std::vector<std::string> notifications;
         int moneyAmount;
-        std::vector<Film*> purchasedFilms;
+        std::vector<Film*> purchased;
 
 
 };

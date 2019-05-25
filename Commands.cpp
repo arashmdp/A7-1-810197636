@@ -39,6 +39,10 @@ void detectCommands(string line, Network* network){
                 network->login(command);
                 cout<<"OK"<<endl;
             }
+            else if(method == LOGOUT){
+                network->logout();
+                cout<<"OK"<<endl;
+            }
             else if (method == FILMS){
                 if(network->getStatus()){
                     network->addFilm(command);
