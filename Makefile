@@ -18,7 +18,7 @@ Network.o: Network.cpp Network.h User.h Publisher.h Film.h Admin.h
 Admin.o: Admin.cpp Admin.h
 	$(CC) -c Admin.cpp
 
-User.o: User.cpp User.h Publisher.h Film.h 
+User.o: User.cpp User.h Publisher.h Film.h Comment.h
 	$(CC) -c User.cpp
 
 Publisher.o: Publisher.cpp Publisher.h Film.h

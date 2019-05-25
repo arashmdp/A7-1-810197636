@@ -55,3 +55,7 @@ void Film::setComment(Comment* comment){
 void Film::buy(){
     numberPurchased++;
 }
+
+vector<Comment*> Film::getComments() const {
+    return comments;
+}

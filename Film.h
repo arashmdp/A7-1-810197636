@@ -23,6 +23,7 @@ public:
     int getPrice() const;
     User* getUser() const;
     int getNumberPurchased() const;
+    std::vector<Comment*> getComments() const;
 
 private:
     std::map <std::string,std::string> info;

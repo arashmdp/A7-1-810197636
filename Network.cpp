@@ -162,14 +162,6 @@ void Network::addMoney(int amount){
     currentUser->addMoney(amount);
 }
 
-void Network::showFilmDetail(int filmID){
-    for(int i=0 ; i<allFilms.size() ; i++){
-        if(filmID == allFilms[i]->getID()){
-            currentUser->showFilmDetail(allFilms[i]);
-        }
-    }
-}
-
 void Network::buyFilm(int filmID){
     Film* film = searchFilmByID(filmID);
     film->getUser()->buyFilm(admin,film);
@@ -245,8 +237,10 @@ void Network::matriceFilmGraph(){
         }
     }
 }
-vector<vector<pair<int,int>>> Network::sortMatrixWithIndex() {
+
+vector<pair<int,int>> Network::sortMatrixWithIndex() {
     vector<vector<pair<int,int>>> weightWithFilmIndex;
+    matriceFilmGraph();
     for(int i=0 ; i<filmMatrix.size() ; i++){
         weightWithFilmIndex.push_back(vector<pair<int,int>>());
         for(int j=0 ; j<filmMatrix[i].size() ; j++){
@@ -260,4 +254,36 @@ vector<vector<pair<int,int>>> Network::sortMatrixWithIndex() {
         }
     }
     sort(weights.rbegin() , weights.rend());
+    return weights;
+}
+
+void Network::printSuggestionFilms(vector<Film*> films){
+    cout<<"Recommendation Film"<<endl;
+    cout<<"#. Film Id | Film Name | Film Length | ";
+    cout<<"Film Director"<<endl;
+    for(int i=0 ; i<films.size() ; i++){
+        map<string,string> info = films[i]->getMapInfo();
+        cout<<i+1<<". "<<films[i]->getID()<<" | ";
+        cout<<info.at(NAME)<<" | ";
+        cout<<info.at(LENGTH)<<" | ";
+        cout<<info.at(DIRECTOR)<<endl;
+    }
+}
+
+void Network::suggestionFilms(){
+    vector<pair<int,int>> sortedFilms = sortMatrixWithIndex();
+    vector<Film*> bestFilms;
+    for(int i=0 ; bestFilms.size()!=4 ; i++){
+        Film* theFilm = allFilms[sortedFilms[i].second];
+        if(!count(bestFilms.begin(),bestFilms.end(),theFilm)){
+            bestFilms.push_back(theFilm);
+        }
+    }
+    printSuggestionFilms(bestFilms);
+}
+
+void Network::showFilmDetail(int filmID){
+    Film* film = searchFilmByID(filmID);
+    currentUser->showFilmDetail(film);
+    suggestionFilms();
 }

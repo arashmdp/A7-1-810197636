@@ -8,7 +8,7 @@ public:
     Comment(std::string _content, int _id);
     std::string getContent() const;
     std::string getReply() const;
-    int getIDt() const;
+    int getID() const ;
 private:
     std::string content;
     std::string reply;

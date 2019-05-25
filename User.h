@@ -7,6 +7,7 @@
 
 #include "Admin.h"
 #include "Film.h"
+#include "Comment.h"
 
 #define USERNAME "username"
 #define PASSWORD "password"
@@ -53,6 +54,9 @@ class User {
         std::vector<std::string> notifications;
         int moneyAmount;
         std::vector<Film*> purchased;
+
+    private:
+        void printComments(Comment* comment);
 
 
 };

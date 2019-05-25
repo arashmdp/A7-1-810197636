@@ -39,8 +39,14 @@ void User::addMoney(int amount){
         moneyAmount+=amount;
     }
 
+void User::printComments(Comment* comment){
+    cout<<comment->getID()<<". "<<comment->getContent()<<endl;
+        cout<<comment->getID()<<".1. "<<comment->getReply()<<endl;
+}
+
 void User::showFilmDetail(Film* film){
     map<string,string> info = film->getMapInfo();
+    vector<Comment*> comments = film->getComments();
     cout<<"Details of Film "<<info.at(NAME)<<endl;
     cout<<"Id = "<<film->getID()<<endl;
     cout<<"Director = "<<info.at(DIRECTOR)<<endl;
@@ -50,6 +56,10 @@ void User::showFilmDetail(Film* film){
     cout<<"rate = "<<film->getRate()<<endl;
     cout<<"price = "<<info.at(PRICE)<<endl<<endl;
     cout<<"Comments"<<endl;
+    for(int i=0 ; i<comments.size() ; i++){
+        printComments(comments[i]);
+    }
+    cout<<endl;
 }
 
 void User::sendNotification(string content){

@@ -35,13 +35,15 @@ class Network {
         void getAcountMoney();
 
         bool getStatus() const;
+        void suggestionFilms();
 
     protected:
         bool noSameName(std::string name);
         bool search(std::vector<std::string>& filters, Film* film, int i);
         Film* searchFilmByID(int filmID);
         void matriceFilmGraph();
-        std::vector<std::vector<std::pair<int,int>>> sortMatrixWithIndex();
+        std::vector<std::pair<int,int>> sortMatrixWithIndex();
+        void printSuggestionFilms(std::vector<Film*> films);
 
     private:
         
