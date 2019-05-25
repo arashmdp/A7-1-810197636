@@ -18,6 +18,10 @@ int Film::getID() const {
     return id;
 }
 
+int Film::getNumberPurchased() const {
+    return numberPurchased;
+}
+
 int Film::getRate() const {
     return aveRate;
 }

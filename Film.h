@@ -22,6 +22,7 @@ public:
     int getRate() const;
     int getPrice() const;
     User* getUser() const;
+    int getNumberPurchased() const;
 
 private:
     std::map <std::string,std::string> info;

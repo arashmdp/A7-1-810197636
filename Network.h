@@ -40,11 +40,14 @@ class Network {
         bool noSameName(std::string name);
         bool search(std::vector<std::string>& filters, Film* film, int i);
         Film* searchFilmByID(int filmID);
+        void matriceFilmGraph();
+        std::vector<std::vector<std::pair<int,int>>> sortMatrixWithIndex();
 
     private:
         
         std::vector <User*> allUsersAndPublishers;
         std::vector <Film*> allFilms;
+        std::vector<std::vector<int>> filmMatrix;
         int filmCount, userCount;
 
         

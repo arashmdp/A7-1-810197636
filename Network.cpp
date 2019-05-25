@@ -4,6 +4,7 @@
 #include <map>
 #include <iterator>
 #include <iostream>
+#include <algorithm>
 
 #define PUBLISHER "publisher"
 #define TRUE "true"
@@ -229,4 +230,34 @@ void Network::addComment(vector<string> information){
     commentID++;
     Comment* comment = new Comment(content,commentID);
     film->setComment(comment);
+}
+
+void Network::matriceFilmGraph(){
+    int weight;
+    for(int i=0; i<allFilms.size() ; i++){
+        for(int j=0; j<allFilms.size() ; i++){
+            if(i==j){
+                filmMatrix[i].push_back(0);
+                continue;
+            }
+            weight = allFilms[i]->getNumberPurchased() + allFilms[j]->getNumberPurchased();
+            filmMatrix[i].push_back(weight);
+        }
+    }
+}
+vector<vector<pair<int,int>>> Network::sortMatrixWithIndex() {
+    vector<vector<pair<int,int>>> weightWithFilmIndex;
+    for(int i=0 ; i<filmMatrix.size() ; i++){
+        weightWithFilmIndex.push_back(vector<pair<int,int>>());
+        for(int j=0 ; j<filmMatrix[i].size() ; j++){
+            weightWithFilmIndex[i].push_back(make_pair(filmMatrix[i][j], i));
+        }
+    }
+    vector<pair<int,int>> weights;
+    for(int i=0 ; i<weightWithFilmIndex.size() ; i++){
+        for(int j=0; j<weightWithFilmIndex[i].size() ; j++){
+            weights.push_back(weightWithFilmIndex[i][j]);
+        }
+    }
+    sort(weights.rbegin() , weights.rend());
 }
